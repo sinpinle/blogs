@@ -1,0 +1,102 @@
+{%- extends "base.html" -%}
+{%- block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editormd.min.css') }}"/>
+{%- endblock styles -%}
+{%- block content -%}
+    <div class="container">
+        <div id="layout">
+            <div id="fail" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Warning!</strong> 服务器出现异常，请稍后再提交
+            </div>
+            <div id="success" class="alert alert-success alert-dismissible" style="display: none;" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Success!</strong> 提交成功
+            </div>
+            <header class="col-md-10 form-inline" style="margin-bottom: 10px;">
+                {% if edit %}
+                    <input id="bId" type="hidden" value="{{ blog._id }}">
+                {% endif %}
+                <b>标题：</b>
+                <input id="title" class="form-control disabled" {% if edit %}value="{{ blog.title }}"
+                       disabled{% endif %}>
+                <div class="col-md-1"></div>
+                <b>标签：</b>
+                <select id="tag" class="form-control disabled" {% if edit %}value="{{ blog.title }}"
+                        disabled{% endif %}>
+                    {% if tags %}
+                        {% for tag in tags %}
+                            {% if blog %}
+                                <option {% if tag.name==blog.tag %}selected{% endif %}>{{ tag.name }}</option>
+                            {% else %}
+                                <option>{{ tag.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                <div class="col-md-1"></div>
+                {% if edit %}
+                    <i id="modify" class="fa fa-pencil" style="cursor: pointer;margin-left:10px;">修改</i>
+                {% endif %}
+            </header>
+            <div id="editor" class="cont">
+                <textarea style="display:none;">{% if edit %}{{ blog.content|safe }}{% endif %}</textarea>
+            </div>
+            <div style="margin-top: 10px; padding: 0 0;" class="col-sm-2">
+                <input id="save" class="btn btn-lg btn-primary btn-block" type="button" value="上传提交">
+            </div>
+        </div>
+    </div>
+{%- endblock content -%}
+{%- block scripts -%}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/editormd.min.js') }}"></script>
+    <script type="text/javascript">
+        var editor;
+        $(function () {
+            editor = editormd("editor", {
+                width: "100%",
+                height: 700,
+                saveHTMLToTextarea: true,
+                syncScrolling: "single",
+                path: "{{ url_for('static', filename='lib/') }}"
+            });
+
+
+            $("#modify").on("click", function (e) {
+                e.preventDefault();
+                $("#title").removeAttr("disabled").focus();
+                $("#tag").removeAttr("disabled").focus();
+            });
+
+            $("#save").on("click", function () {
+                var bid = $("#bId").val();
+                var title = $("#title").val();
+                var tag = $("#tag").val();
+                var body = editor.getMarkdown();
+                var blog = {
+                    "title": title, "content": body, "tag": tag
+                };
+
+                var url = {% if edit %}"/admin/update/" + bid;{% else %}"/admin/add";{% endif %}
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: "JSON",
+                    data: JSON.stringify(blog),
+                    success: function (data) {
+                        $("#success").show();
+                    },
+                    error: function (e) {
+                        $("#fail").show();
+                    }
+                });
+            });
+
+            setFooter();
+        });
+    </script>
+{%- endblock scripts -%}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{%- block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/editormd.min.css') }}"/>
+{%- endblock styles -%}
+
+{% block content %}
+    {% include "renders/admin_blog_list.html" %}
+{% endblock content %}
+
+{%- block rsidebar -%}
+    {% include "renders/right_sidebar.html" %}
+{%- endblock rsidebar -%}
+
+{%- block scripts -%}
+    {{ super() }}
+    <script src="{{ url_for('static',filename='lib/marked.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/prettify.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/raphael.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/underscore.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/sequence-diagram.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/flowchart.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='lib/jquery.flowchart.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/editormd.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            {% for i in range(0,total) %}
+                var editormdView{{ i }} = editormd.markdownToHTML("editormd-view{{ i }}", {
+                    htmlDecode: "style,script,iframe",
+                    emoji: true,
+                    taskList: true,
+                    tex: true,  // 默认不解析
+                    flowChart: true,  // 默认不解析
+                    sequenceDiagram: true  // 默认不解析
+                });
+            {% endfor %}
+            setFooter();
+        });
+    </script>
+{%- endblock scripts -%}

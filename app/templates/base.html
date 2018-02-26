@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {%- block styles -%}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/ext.css') }}">
+    {%- endblock styles -%}
+    {%- if title -%}
+        <title>{{ title }} - blog</title>
+    {%- else -%}
+        <title>blog</title>
+    {%- endif -%}
+</head>
+
+<body>
+
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse mb-4">
+    <div class="container" style="min-width:300px;">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarCollapse" aria-controls="navbarCollapse"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/">sinpinle's blog</a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">主页
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/suggest">推荐</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/comment">留言</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">关于</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/feed">RSS</a>
+                </li>
+            </ul>
+            <form class="form-inline mt-2 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        {%- block lsidebar -%}
+        {%- endblock lsidebar -%}
+
+        {%- block content -%}
+        {%- endblock content -%}
+
+        {%- block rsidebar -%}
+        {%- endblock rsidebar -%}
+    </div>
+</div>
+<footer class="footer-ext">
+    <div class="container" style="color: #fff;line-height: 50px;text-align: center;">
+        sinpinle.tk | Powered By Python
+    </div>
+</footer>
+{%- block scripts -%}
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        function setFooter() {
+            //设置footer居于底部
+            var wh = $(window).height();
+            var bh = $(document).height();
+            var footer = $("footer");
+            var fh = footer.height();
+            var setTop = wh > bh ? wh - fh : bh - fh;
+            footer.css({"position": "absolute", "top": setTop + "px"});
+        }
+    </script>
+{%- endblock scripts -%}
+</body>
+
+</html>

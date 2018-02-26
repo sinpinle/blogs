@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="form-control">Sign In</h1>
+    <form class="form-control" action="/admin/login" method="post" name="login">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }} {{ form.username(class='uname') }}
+        </p>
+        <p>
+            {{ form.password.label }} {{ form.password(class='pwd',type='password') }}
+        </p>
+        <p>{{ form.remember_me }} Remember Me</p>
+        <p><input type="submit" value="Sign In"></p>
+        <p><a href="/admin/oauth">微博登录</a></p>
+    </form>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(function () {
+            setFooter();
+        });
+    </script>
+{% endblock scripts %}

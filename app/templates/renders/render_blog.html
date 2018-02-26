@@ -1,0 +1,114 @@
+{% macro render_section(posts,tags) %}
+    <div class="col-md-3">
+        <section class="article">
+            <header class="h4 text-primary" style="text-align:center;font-size:1.5em;font-weight:600;">关于本站
+            </header>
+            <img src="{{ url_for('static', filename='images/qrcode_me.jpg') }}" style="width: 100%;">
+            <div class="right-section-row"><i class="fa fa-wechat" style="color:#0275d8;"> sinpinle</i></div>
+            <div class="right-section-row"><i class="fa fa-weibo" style="color:#0275d8;"> sinpinle</i></div>
+            <div class="right-section-row">
+                <a href="mailto:sinpinle@163.com">sinpinle@163.com</a>
+            </div>
+        </section>
+        <section class="article">
+            <header class="h4 header-ext">最新文章
+            </header>
+            <ul class="list-group">
+                {% if posts %}
+                    {% for post in posts %}
+                        <li class="list-group-item border-right-left-none">
+                            <a href="/blog/{{ post['_id'] }}"
+                               style="color: #292b2c;text-decoration: none;">{{ post.title }}</a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item border-right-left-none">暂无数据</li>
+                {% endif %}
+            </ul>
+        </section>
+        <section class="article">
+            <header class="h4 header-ext">目录分类
+            </header>
+            <ul class="list-group">
+                {% if tags %}
+                    {% for tag in tags %}
+                        <li class="list-group-item border-right-left-none">
+                            {% if tag.count>0 %}
+                                <a href="/tag/{{ tag['_id'] }}" style="color: #292b2c;text-decoration: none;">
+                                    {{ tag.name }} ({{ tag.count }})
+                                </a>
+                            {% else %}
+                                {{ tag.name }} ({{ tag.count }})
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item border-right-left-none">暂无数据</li>
+                {% endif %}
+            </ul>
+        </section>
+    </div>
+{% endmacro %}
+
+{% macro render_list(posts) %}
+    <div class="col-md-9">
+        {% for i in range(0,posts.__len__()) %}
+            <article class="article">
+                <h4 class="page-header">{{ posts[i].title }}</h4>
+                <div>
+                    <i class="fa fa-calendar-o" style="margin-right: 5px;color: #0275DA;">  {{ posts[i].post_date }}</i>
+                    <i class="fa fa-user" style="margin-right: 5px;color: #0275DA;">  {{ posts[i].author }}</i>
+                    {% if posts[i].modify_date != '' %}
+                        <i class="fa fa-pencil-square-o" style="color: #0275DA;"> 修改于{{ posts[i].modify_date }}</i>
+                    {% endif %}
+                </div>
+                <hr>
+                <div id="editormd-view{{ i }}">
+                    <textarea id="append" style="display:none;">{{ posts[i].content|safe }}</textarea>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro render_admin_list(posts) %}
+    <div class="col-md-9">
+        {% for i in range(0,posts.__len__()) %}
+            <article class="article">
+                <h4 class="page-header">{{ posts[i].title }}</h4>
+                <div>
+                    <i class="fa fa-archive" style="margin-right: 5px;color: #0275DA;">
+                        <a href="/blog/{{ posts[i]._id }}">预览</a>
+                    </i>
+                    <i class="fa fa-pencil" style="margin-right: 5px;color: #0275DA;">
+                        <a href="/admin/edit/{{ posts[i]._id }}">编辑</a></i>
+                    <i class="fa fa-flag" style="margin-right: 5px;color: #0275DA;">
+                        <a href="/admin/top/{{ posts[i]._id }}" target="_parent">置顶</a></i>
+                </div>
+                <hr>
+                <div id="editormd-view{{ i }}" style="max-height: 220px;overflow: hidden">
+                    <textarea id="append" style="display:none;">{{ posts[i].content|safe }}</textarea>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro render_one_blog(post) %}
+    <div class="col-md-9">
+        <article class="article">
+            <h4 class="page-header">{{ post.title }}</h4>
+            <div>
+                <i class="fa fa-calendar-o" style="margin-right: 5px;color: #0275DA;">  {{ post.post_date }}</i>
+                <i class="fa fa-user" style="margin-right: 5px;color: #0275DA;">  {{ post.author }}</i>
+                {% if post.modify_date != '' %}
+                    <i class="fa fa-pencil-square-o" style="color: #0275DA;"> 修改于{{ post.modify_date }}</i>
+                {% endif %}
+            </div>
+            <hr>
+            <div id="editormd-view">
+                <textarea id="append" style="display:none;">{{ post.content|safe }}</textarea>
+            </div>
+        </article>
+    </div>
+{% endmacro %}
