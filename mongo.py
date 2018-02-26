@@ -12,8 +12,8 @@ from pymongo import MongoClient
 
 
 class MongodbConfig(object):
-    MONGODB_USER = os.getenv('MONGO_USER', 'sinpinle')
-    MONGODB_PWD = os.getenv('MONGO_PWD', 'test123456')
+    MONGODB_USER = os.getenv('MONGO_USER', 'xxxx')
+    MONGODB_PWD = os.getenv('MONGO_PWD', 'xxxxx')
     USERNAME = urllib.parse.quote_plus(MONGODB_USER)
     PASSWORD = urllib.parse.quote_plus(MONGODB_PWD)
     MONGODB_DEFAULT_URL = 'mongodb://%s:%s@127.0.0.1:27017/blog' % (USERNAME, PASSWORD)
