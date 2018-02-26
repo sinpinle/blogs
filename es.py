@@ -9,7 +9,7 @@ from elasticsearch import Elasticsearch
 
 # body = {'name': 'sinpinle', 'sex': 'male'}
 body = {'content': 'this is a test of elasticsearch', 'date': '2018-02-11'}
-es = Elasticsearch(['104.207.152.96:9200'])
+es = Elasticsearch([''])
 
 # es.index(index='test', doc_type='test', body=body)
 # re = es.index(index='article', doc_type='test', body=body)
