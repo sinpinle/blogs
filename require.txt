@@ -60,7 +60,7 @@ python3-openid==3.1.0
 pywin32==221
 queuelib==1.4.2
 requests==2.18.4
-Scrapy==1.5.0
+Scrapy==2.6.2
 service-identity==17.0.0
 six==1.11.0
 SQLAlchemy==1.2.0
